@@ -39,7 +39,7 @@ export default function UploadPanel({ onImageSelect, preview }) {
             <p>Drop X-ray here</p>
           </div>
         ) : (
-          <img src={preview} width="100%" />
+          <img src={preview} width="100%" alt="Chest X-ray preview"/>
         )}
       </div>
     </div>
