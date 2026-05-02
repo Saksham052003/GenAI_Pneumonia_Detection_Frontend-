@@ -1,0 +1,37 @@
+# Node modules (VERY important)
+
+node_modules/
+
+# Environment variables (IMPORTANT - contains secrets)
+
+.env
+
+# Build output
+
+build/
+dist/
+
+# Logs
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Editor folders
+
+.vscode/
+.idea/
+
+# Testing
+
+coverage/
+
+# Misc
+
+.cache/
