@@ -5,8 +5,7 @@ import UploadPanel from "../components/UploadPanel";
 import PatientForm from "../components/PatientForm";
 import ResultPanel from "../components/ResultPanel";
 
-const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
-
+const API = process.env.REACT_APP_API_URL;
 export default function Home() {
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -23,7 +22,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
 
-  // ── Handle Image Upload ──
+  // ─── Image Upload Handler ───
   const handleImageSelect = useCallback((file) => {
     setImageFile(file);
     setResult(null);
@@ -39,7 +38,7 @@ export default function Home() {
     }
   }, []);
 
-  // ── Run Prediction ──
+  // ─── Run AI Prediction ───
   const handleAnalyze = async () => {
     if (!imageFile) {
       alert("Please upload an X-ray image");
@@ -51,8 +50,6 @@ export default function Home() {
 
     const fd = new FormData();
     fd.append("image", imageFile);
-
-    // 🔥 optional: send patient data also
     fd.append("patient", JSON.stringify(patient));
 
     try {
@@ -68,19 +65,27 @@ export default function Home() {
       setStep(3);
     } catch (err) {
       console.error(err);
-      alert("Backend not connected or error occurred");
+      alert("⚠️ Backend not connected or error occurred");
       setStep(1);
     } finally {
       setLoading(false);
     }
   };
 
-  // ── Reset (useful UX) ──
+  // ─── Reset App ───
   const handleReset = () => {
     setImageFile(null);
     setPreview(null);
     setResult(null);
     setStep(0);
+
+    setPatient({
+      name: "",
+      age: "",
+      gender: "",
+      symptoms: "",
+      date: new Date().toISOString().split("T")[0],
+    });
   };
 
   return (
@@ -99,6 +104,7 @@ export default function Home() {
                 onImageSelect={handleImageSelect}
               />
 
+              {/* 🔥 Safe data passing */}
               <PatientForm data={patient || {}} onChange={setPatient} />
             </div>
 
@@ -114,8 +120,6 @@ export default function Home() {
           <>
             <ResultPanel result={result} />
 
-            
-            {/* ✅ Reset Button */}
             <button className="btn btn-full" onClick={handleReset}>
               Analyze Another X-ray
             </button>
